@@ -20,9 +20,16 @@
           </ul>
         ]]>
     </description>
-    <version>1.1.8.CustomFix</version>
+    <version>1.1.8.customFix</version>
     <change-notes>
         <![CDATA[
+           version 1.1.8.customFix
+           <br/>
+           <ul>
+           <li>Add "Private constructor" checkbox option in order to add or not a private constructor and its initialization method (uncheck by default)</li>
+           <li>Check by default the checkbox option "Inner builder"</li>
+           <li>Change suggested builder's method name depending on "Inner builder" checkbox state: checked: "Builder", unchecked: "ClassNameBuilder"</li>
+           </ul>
            version 1.1.8
            <br/>
            <ul>

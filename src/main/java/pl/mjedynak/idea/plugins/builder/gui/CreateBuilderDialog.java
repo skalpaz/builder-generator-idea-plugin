@@ -60,13 +60,15 @@ public class CreateBuilderDialog extends DialogWrapper {
     private JCheckBox innerBuilder;
     private JCheckBox butMethod;
     private JCheckBox useSingleField;
+    private JCheckBox hasPrivateConstructor;
     private ReferenceEditorComboWithBrowseButton targetPackageField;
     private PsiClass existingBuilder;
+    private String builderSuffix;
 
     public CreateBuilderDialog(Project project,
                                String title,
                                PsiClass sourceClass,
-                               String targetClassName,
+                               String builderSuffix,
                                String methodPrefix,
                                PsiPackage targetPackage,
                                PsiHelper psiHelper,
@@ -79,7 +81,8 @@ public class CreateBuilderDialog extends DialogWrapper {
         this.project = project;
         this.sourceClass = sourceClass;
         this.existingBuilder = existingBuilder;
-        targetClassNameField = new JTextField(targetClassName);
+        this.builderSuffix = builderSuffix;
+        targetClassNameField = new JTextField(builderSuffix);
         targetMethodPrefix = new JTextField(methodPrefix);
         setPreferredSize(targetClassNameField);
         setPreferredSize(targetMethodPrefix);
@@ -169,6 +172,8 @@ public class CreateBuilderDialog extends DialogWrapper {
         gbConstraints.gridx = 1;
         gbConstraints.weightx = 1;
 
+        targetPackageField.setEnabled(false);
+
         AnAction clickAction = new AnAction() {
             @Override
             public void actionPerformed(AnActionEvent e) {
@@ -198,10 +203,12 @@ public class CreateBuilderDialog extends DialogWrapper {
         gbConstraints.anchor = GridBagConstraints.WEST;
 
         innerBuilder = new JCheckBox();
+        innerBuilder.setSelected(true);
         innerBuilder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 targetPackageField.setEnabled(!innerBuilder.isSelected());
+                targetClassNameField.setText(innerBuilder.isSelected() ? getBuilderSuffix() : sourceClass.getName() + getBuilderSuffix());
             }
         });
         panel.add(innerBuilder, gbConstraints);
@@ -246,6 +253,26 @@ public class CreateBuilderDialog extends DialogWrapper {
         useSingleField = new JCheckBox();
         panel.add(useSingleField, gbConstraints);
         // useSingleField
+
+
+        // hasPrivateConstructor
+        gbConstraints.insets = new Insets(4, 8, 4, 8);
+        gbConstraints.gridx = 0;
+        gbConstraints.weightx = 0;
+        gbConstraints.gridy = 7;
+        gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gbConstraints.anchor = GridBagConstraints.WEST;
+        panel.add(new JLabel("Private constructor"), gbConstraints);
+
+        gbConstraints.insets = new Insets(4, 8, 4, 8);
+        gbConstraints.gridx = 1;
+        gbConstraints.weightx = 1;
+        gbConstraints.gridwidth = 1;
+        gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gbConstraints.anchor = GridBagConstraints.WEST;
+        hasPrivateConstructor = new JCheckBox();
+        panel.add(hasPrivateConstructor, gbConstraints);
+        // hasPrivateConstructor
 
         return panel;
     }
@@ -325,6 +352,8 @@ public class CreateBuilderDialog extends DialogWrapper {
         return targetClassNameField.getText();
     }
 
+    public String getBuilderSuffix() { return builderSuffix; }
+
     public String getMethodPrefix() {
         return targetMethodPrefix.getText();
     }
@@ -337,9 +366,9 @@ public class CreateBuilderDialog extends DialogWrapper {
         return butMethod.isSelected();
     }
 
-    public boolean useSingleField() {
-        return useSingleField.isSelected();
-    }
+    public boolean useSingleField() { return useSingleField.isSelected(); }
+
+    public boolean hasPrivateConstructor() { return hasPrivateConstructor.isSelected(); }
 
     public PsiDirectory getTargetDirectory() {
         return targetDirectory;
@@ -347,5 +376,72 @@ public class CreateBuilderDialog extends DialogWrapper {
 
     public void setTargetDirectory(PsiDirectory targetDirectory) {
         this.targetDirectory = targetDirectory;
+    }
+
+    public static final class Builder {
+        private Project project;
+        private String title;
+        private PsiClass sourceClass;
+        private String builderSuffix;
+        private String methodPrefix;
+        private PsiPackage targetPackage;
+        private PsiHelper psiHelper;
+        private GuiHelper guiHelper;
+        private ReferenceEditorComboWithBrowseButtonFactory referenceEditorComboWithBrowseButtonFactory;
+        private PsiClass existingBuilder;
+
+        public Builder withProject(Project project) {
+            this.project = project;
+            return this;
+        }
+
+        public Builder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder withSourceClass(PsiClass sourceClass) {
+            this.sourceClass = sourceClass;
+            return this;
+        }
+
+        public Builder withBuilderSuffix(String builderSuffix) {
+            this.builderSuffix = builderSuffix;
+            return this;
+        }
+
+        public Builder withMethodPrefix(String methodPrefix) {
+            this.methodPrefix = methodPrefix;
+            return this;
+        }
+
+        public Builder withTargetPackage(PsiPackage targetPackage) {
+            this.targetPackage = targetPackage;
+            return this;
+        }
+
+        public Builder withPsiHelper(PsiHelper psiHelper) {
+            this.psiHelper = psiHelper;
+            return this;
+        }
+
+        public Builder withGuiHelper(GuiHelper guiHelper) {
+            this.guiHelper = guiHelper;
+            return this;
+        }
+
+        public Builder withReferenceEditorComboWithBrowseButtonFactory(ReferenceEditorComboWithBrowseButtonFactory referenceEditorComboWithBrowseButtonFactory) {
+            this.referenceEditorComboWithBrowseButtonFactory = referenceEditorComboWithBrowseButtonFactory;
+            return this;
+        }
+
+        public Builder withExistingBuilder(PsiClass existingBuilder) {
+            this.existingBuilder = existingBuilder;
+            return this;
+        }
+
+        public CreateBuilderDialog build() {
+            return new CreateBuilderDialog(project, title, sourceClass, builderSuffix, methodPrefix, targetPackage, psiHelper, guiHelper, referenceEditorComboWithBrowseButtonFactory, existingBuilder);
+        }
     }
 }

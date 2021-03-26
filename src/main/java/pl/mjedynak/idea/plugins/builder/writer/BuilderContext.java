@@ -17,10 +17,11 @@ public class BuilderContext {
     private final boolean isInner;
     private final boolean hasButMethod;
     private final boolean useSingleField;
+    private final boolean hasPrivateConstructor;
 
     public BuilderContext(Project project, PsiFieldsForBuilder psiFieldsForBuilder,
                           PsiDirectory targetDirectory, String className, PsiClass psiClassFromEditor,
-                          String methodPrefix, boolean isInner, boolean hasButMethod, boolean useSingleField) {
+                          String methodPrefix, boolean isInner, boolean hasButMethod, boolean useSingleField, boolean hasPrivateConstructor) {
         this.project = project;
         this.psiFieldsForBuilder = psiFieldsForBuilder;
         this.targetDirectory = targetDirectory;
@@ -30,6 +31,7 @@ public class BuilderContext {
         this.isInner = isInner;
         this.hasButMethod = hasButMethod;
         this.useSingleField = useSingleField;
+        this.hasPrivateConstructor = hasPrivateConstructor;
     }
 
     public Project getProject() {
@@ -60,9 +62,9 @@ public class BuilderContext {
         return isInner;
     }
 
-    boolean hasButMethod() {
-        return hasButMethod;
-    }
+    boolean hasButMethod() { return hasButMethod; }
+
+    boolean hasPrivateConstructor() { return hasPrivateConstructor; }
 
     public boolean useSingleField() {
         return useSingleField;
