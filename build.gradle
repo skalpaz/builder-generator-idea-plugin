@@ -29,9 +29,8 @@ dependencies {
 
 jar {
     metaInf {
-        from('/META-INF') {
+        from('./META-INF') {
             include 'plugin.xml'
         }
     }
 }
-
