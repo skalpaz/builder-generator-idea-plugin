@@ -33,7 +33,7 @@ public class BuilderFinderTest {
         given(psiClass.isAnnotationType()).willReturn(false);
         given(psiClass.getProject()).willReturn(project);
         given(psiClass.getName()).willReturn(CLASS_NAME);
-        given(psiClass.getAllInnerClasses()).willReturn(new PsiClass[0]);
+        given(psiClass.getInnerClasses()).willReturn(new PsiClass[0]);
 
         given(builderClass.getName()).willReturn(BUILDER_NAME);
         given(builderClass.getProject()).willReturn(project);
@@ -110,7 +110,7 @@ public class BuilderFinderTest {
         PsiClass innerClass = mock(PsiClass.class);
         PsiClass[] innerClasses = {innerClass};
         given(innerClass.getName()).willReturn(BuilderFinder.SEARCH_PATTERN);
-        given(psiClass.getAllInnerClasses()).willReturn(innerClasses);
+        given(psiClass.getInnerClasses()).willReturn(innerClasses);
 
         // when
         PsiClass result = builderFinder.findBuilderForClass(psiClass);
@@ -125,7 +125,7 @@ public class BuilderFinderTest {
         PsiClass innerClass = mock(PsiClass.class);
         PsiClass[] innerClasses = {innerClass};
         given(innerClass.getName()).willReturn("SomeInnerClass");
-        given(psiClass.getAllInnerClasses()).willReturn(innerClasses);
+        given(psiClass.getInnerClasses()).willReturn(innerClasses);
 
         // when
         PsiClass result = builderFinder.findBuilderForClass(psiClass);

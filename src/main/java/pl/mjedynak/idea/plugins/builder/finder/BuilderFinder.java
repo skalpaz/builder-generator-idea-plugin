@@ -1,6 +1,7 @@
 package pl.mjedynak.idea.plugins.builder.finder;
 
 import com.intellij.psi.PsiClass;
+import pl.mjedynak.idea.plugins.builder.logger.CustomLogger;
 
 public class BuilderFinder {
 
@@ -25,8 +26,8 @@ public class BuilderFinder {
 
     private PsiClass tryFindInnerBuilder(PsiClass psiClass) {
         PsiClass innerBuilderClass = null;
-        PsiClass[] allInnerClasses = psiClass.getAllInnerClasses();
-        for (PsiClass innerClass : allInnerClasses) {
+        PsiClass[] innerClasses = psiClass.getInnerClasses();
+        for (PsiClass innerClass : innerClasses) {
             if (innerClass.getName().contains(SEARCH_PATTERN)) {
                 innerBuilderClass = innerClass;
                 break;

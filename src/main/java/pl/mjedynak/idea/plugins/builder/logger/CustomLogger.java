@@ -43,7 +43,7 @@ public class CustomLogger {
 
     // Example:
     //    CustomLogger.displayStickyNotification(
-    //            this.getClass().getName(),
+    //            this.getClass().getSimpleName(),
     //                new Object() {}.getClass().getEnclosingMethod().getName(),
-    //                "Start...");
+    //                "TextToDisplay");
 }

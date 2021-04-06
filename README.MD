@@ -15,3 +15,12 @@ Customization
 - Install plugin in IntelliJ:
   - Go to Settings > Plugins > "gearwheel" > Install plugin from Disk
   - Select jar file
+
+
+- Add custom logs:
+  ```Java
+    CustomLogger.displayStickyNotification(
+                this.getClass().getSimpleName(),
+                new Object() {}.getClass().getEnclosingMethod().getName(),
+                "TextToDisplay");
+  ``` 

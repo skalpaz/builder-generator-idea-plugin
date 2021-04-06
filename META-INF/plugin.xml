@@ -29,6 +29,7 @@
            <li>Add "Private constructor" checkbox option in order to add or not a private constructor and its initialization method (uncheck by default)</li>
            <li>Check by default the checkbox option "Inner builder"</li>
            <li>Change suggested builder's method name depending on "Inner builder" checkbox state: checked: "Builder", unchecked: "ClassNameBuilder"</li>
+           <li>Fix builder creation when source class is extending another one</li>
            </ul>
            version 1.1.8
            <br/>

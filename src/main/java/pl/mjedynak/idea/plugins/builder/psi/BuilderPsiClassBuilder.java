@@ -10,6 +10,7 @@ import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
 import org.apache.commons.lang.StringUtils;
+import pl.mjedynak.idea.plugins.builder.logger.CustomLogger;
 import pl.mjedynak.idea.plugins.builder.settings.CodeStyleSettings;
 import pl.mjedynak.idea.plugins.builder.verifier.PsiFieldVerifier;
 import pl.mjedynak.idea.plugins.builder.writer.BuilderContext;
@@ -85,9 +86,15 @@ public class BuilderPsiClassBuilder {
         allSelectedPsiFields = context.getPsiFieldsForBuilder().getAllSelectedFields();
         useSingleField = context.useSingleField();
         bestConstructor = context.getPsiFieldsForBuilder().getBestConstructor();
-        methodCreator = new MethodCreator(elementFactory, builderClassName);
+        methodCreator = new MethodCreator(elementFactory, buildMethodCreatorClassName(srcClass, builderClassName));
         butMethodCreator = new ButMethodCreator(elementFactory);
         isInline = allSelectedPsiFields.size() == psiFieldsForConstructor.size();
+    }
+
+    private String buildMethodCreatorClassName(PsiClass srcClass, String builderClassName) {
+        return srcClass.getExtendsList().getReferenceElements().length == 0 ?
+                builderClassName
+                : srcClass.getName() + "." + builderClassName;
     }
 
     public BuilderPsiClassBuilder withFields() {
